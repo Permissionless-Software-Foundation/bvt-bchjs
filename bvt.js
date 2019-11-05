@@ -5,9 +5,8 @@
 
   BVT tests the products in this order:
   - liveness
-  - rest
-  - BITBOX
-  - slp-sdk
+  - bch-api
+  - bch-js
 
   BVT runs tests in this order:
   - unit
@@ -29,13 +28,10 @@ const Liveness = require("./lib/liveness");
 const liveness = new Liveness();
 
 const REST = require("./lib/rest");
-const rest = new REST()
+const rest = new REST();
 
-// const BITBOX = require("./lib/bitbox")
-// const bitbox = new BITBOX()
-
-// const SLPSDK = require("./lib/slp-sdk")
-// const slpsdk = new SLPSDK()
+const BCHJS = require("./lib/bch-js");
+const bchjs = new BCHJS();
 
 // Used for debugging and iterrogating JS objects.
 const util = require("util");
@@ -55,16 +51,12 @@ async function runTests() {
 
     // Run all liveness tests first.
     await liveness.runTests();
-    await utils.logAll(`Liveness tests complete.`);
 
     // Run the suite of rest tests.
-    await rest.runTests()
+    await rest.runTests();
 
     // Run the suite of BITBOX tests.
-    // await bitbox.runTests()
-
-    // Run the suite of SLP-SDK tests.
-    // await slpsdk.runTests()
+    await bchjs.runTests();
 
     // Signal the tests have completed.
     const endTime = new Date();
