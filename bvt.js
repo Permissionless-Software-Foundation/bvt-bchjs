@@ -16,7 +16,7 @@
 
 "use strict";
 
-const PERIOD = 60000 * 60 * 4; // 4 hrs
+const PERIOD = 60000 * 60 * 2; // 2 hrs
 //const PERIOD = 60000 * 60
 
 const GARBAGE_PERIOD = 60000 * 60 * 24; // 1 day
