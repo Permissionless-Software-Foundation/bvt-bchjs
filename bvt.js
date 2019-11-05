@@ -55,6 +55,7 @@ async function runTests() {
 
     // Run all liveness tests first.
     await liveness.runTests();
+    await utils.logAll(`Liveness tests complete.`);
 
     // Run the suite of rest tests.
     await rest.runTests()
