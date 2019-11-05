@@ -1,0 +1,25 @@
+{
+  "name": "bvt-rest",
+  "version": "1.0.0",
+  "description": "Build verification test system for rest, bitbox, and slp-sdk",
+  "main": "bvt.js",
+  "scripts": {
+    "test": "echo \"no tests yet\"",
+    "start": "node bvt.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/christroutner/bvt-rest.git"
+  },
+  "author": "Chris Troutner <chris.troutner@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/christroutner/bvt-rest/issues"
+  },
+  "homepage": "https://github.com/christroutner/bvt-rest#readme",
+  "dependencies": {
+    "@chris.troutner/bch-js": "^2.0.0",
+    "node-telegram-bot-api": "^0.40.0",
+    "shelljs": "^0.8.3"
+  }
+}
