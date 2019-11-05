@@ -3,3 +3,4 @@ uut/
 private/
 html/logs/*
 bkup/*
+start-bvt.sh
