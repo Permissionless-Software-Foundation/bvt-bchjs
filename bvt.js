@@ -27,8 +27,8 @@ const utils = require("./lib/util");
 const Liveness = require("./lib/liveness");
 const liveness = new Liveness();
 
-const REST = require("./lib/rest");
-const rest = new REST();
+const BCHAPI = require("./lib/bch-api");
+const bchapi = new BCHAPI();
 
 const BCHJS = require("./lib/bch-js");
 const bchjs = new BCHJS();
@@ -53,7 +53,7 @@ async function runTests() {
     await liveness.runTests();
 
     // Run the suite of rest tests.
-    await rest.runTests();
+    await bchapi.runTests();
 
     // Run the suite of BITBOX tests.
     await bchjs.runTests();
