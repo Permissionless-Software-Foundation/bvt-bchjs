@@ -18,7 +18,7 @@
   },
   "homepage": "https://github.com/christroutner/bvt-rest#readme",
   "dependencies": {
-    "@chris.troutner/bch-js": "^2.3.7",
+    "@chris.troutner/bch-js": "^2.3.10",
     "node-telegram-bot-api": "^0.40.0",
     "shelljs": "^0.8.3"
   }
