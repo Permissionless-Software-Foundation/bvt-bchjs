@@ -54,13 +54,13 @@ async function runTests() {
     await utils.logAll(`BVT tests started...`);
 
     // Run all liveness tests first.
-    // await liveness.runTests();
+    await liveness.runTests();
 
     // Run the suite of rest tests.
-    // await bchapi.runTests();
+    await bchapi.runTests();
 
     // Run the suite of BITBOX tests.
-    // await bchjs.runTests();
+    await bchjs.runTests();
 
     // Download and analyze the logs
     await logAnalysis.runTests()
