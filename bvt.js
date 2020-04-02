@@ -68,6 +68,7 @@ async function runTests() {
     // Signal the tests have completed.
     const endTime = new Date();
     await utils.logAll(`...BVT tests completed.`);
+    await utils.logAll(`Results can be viewed at https://metrics.fullstack.cash/`)
 
     // Signal when the next run will be
     const nextRun = new Date(startTime.getTime() + PERIOD);
