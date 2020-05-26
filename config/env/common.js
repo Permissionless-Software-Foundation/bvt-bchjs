@@ -9,5 +9,6 @@ module.exports = {
   telegramToken: process.env.TELEGRAMTOKEN ? process.env.TELEGRAMTOKEN : "",
   chatId: process.env.CHATID ? process.env.CHATID : "@bchjs_bvt",
   restURL: process.env.RESTURL ? process.env.RESTURL : "https://api.fullstack.cash/v3/",
-  apiToken: process.env.BCHJSTOKEN ? process.env.BCHJSTOKEN : ""
+  apiToken: process.env.BCHJSTOKEN ? process.env.BCHJSTOKEN : "",
+  testnetUrl: "https://tapi.fullstack.cash/v3/"
 }
