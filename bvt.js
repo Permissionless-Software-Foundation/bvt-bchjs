@@ -68,13 +68,13 @@ async function runTests() {
     await liveness.runTests();
 
     // Run the suite of rest tests.
-    await bchapi.runTests();
+    // await bchapi.runTests();
 
     // Run the suite of BITBOX tests.
     await bchjs.runTests();
 
     // Download and analyze the logs
-    await logAnalysis.runTests()
+    // await logAnalysis.runTests()
 
     // Signal the tests have completed.
     const endTime = new Date();
