@@ -30,6 +30,9 @@ const liveness = new Liveness();
 const LogAnalysis = require('./lib/log-analysis')
 const logAnalysis = new LogAnalysis()
 
+const FreeLogAnalysis = require('./lib/free-log-analysis')
+const freeLogAnalysis = new FreeLogAnalysis()
+
 // Instantiate the JWT handling library for FullStack.cash.
 const JwtLib = require('jwt-bch-lib')
 const jwtLib = new JwtLib({
@@ -68,13 +71,16 @@ async function runTests() {
     await liveness.runTests();
 
     // Run the suite of rest tests.
-    // await bchapi.runTests();
+    await bchapi.runTests();
 
     // Run the suite of BITBOX tests.
     await bchjs.runTests();
 
     // Download and analyze the logs
-    // await logAnalysis.runTests()
+    await logAnalysis.runTests()
+
+    // Download and analyze the logs from the free-tier server.
+    await freeLogAnalysis.runTests()
 
     // Signal the tests have completed.
     const endTime = new Date();
