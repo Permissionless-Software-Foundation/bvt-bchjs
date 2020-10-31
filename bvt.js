@@ -33,6 +33,9 @@ const logAnalysis = new LogAnalysis()
 const FreeLogAnalysis = require('./lib/free-log-analysis')
 const freeLogAnalysis = new FreeLogAnalysis()
 
+const BchnLogAnalysis = require('./lib/free-bchn-log-analysis')
+const freeBchnAnalysis = new BchnLogAnalysis()
+
 // Instantiate the JWT handling library for FullStack.cash.
 const JwtLib = require('jwt-bch-lib')
 const jwtLib = new JwtLib({
@@ -81,6 +84,9 @@ async function runTests() {
 
     // Download and analyze the logs from the free-tier server.
     await freeLogAnalysis.runTests()
+
+    // Download and analyze the logs from the free BCHN server.
+    await freeBchnAnalysis.runTests()
 
     // Signal the tests have completed.
     const endTime = new Date();
