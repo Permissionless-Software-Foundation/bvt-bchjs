@@ -1,6 +1,6 @@
 /*
   BVT = Build Verification Test
-  A BVT ensures the units under test can build, successfully run all classes
+  A BVT ensures the units under test can build, successfully runs all classes
   of tests, and verifies that production servers are operating as expected.
 
   BVT tests the products in this order:
