@@ -27,7 +27,7 @@ const utils = require("./lib/util");
 const Liveness = require("./lib/liveness");
 const liveness = new Liveness();
 
-const AbcLogAnalysis = require('./lib/bchn-log-analysis')
+const AbcLogAnalysis = require('./lib/abc-log-analysis')
 const abcLogAnalysis = new AbcLogAnalysis()
 
 const FreeLogAnalysis = require('./lib/free-log-analysis')
@@ -71,22 +71,22 @@ async function runTests() {
     await utils.logAll(`BVT tests started...`);
 
     // Run all liveness tests first.
-    await liveness.runTests();
+    // await liveness.runTests();
 
     // Run the suite of rest tests.
-    await bchapi.runTests();
+    // await bchapi.runTests();
 
     // Run the suite of BITBOX tests.
-    await bchjs.runTests();
+    // await bchjs.runTests();
 
     // Download and analyze the logs
     await abcLogAnalysis.runTests()
 
     // Download and analyze the logs from the free-tier server.
-    await freeLogAnalysis.runTests()
+    // await freeLogAnalysis.runTests()
 
     // Download and analyze the logs from the free BCHN server.
-    await freeBchnAnalysis.runTests()
+    // await freeBchnAnalysis.runTests()
 
     // Signal the tests have completed.
     const endTime = new Date();
