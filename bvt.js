@@ -33,8 +33,8 @@ const abcLogAnalysis = new AbcLogAnalysis()
 const BchnLogAnalysis = require('./lib/bchn-log-analysis')
 const bchnLogAnalysis = new BchnLogAnalysis()
 
-const FreeLogAnalysis = require('./lib/free-log-analysis')
-const freeLogAnalysis = new FreeLogAnalysis()
+const Testnet3LogAnalysis = require('./lib/testnet3-log-analysis')
+const testnet3LogAnalysis = new Testnet3LogAnalysis()
 
 
 
@@ -83,14 +83,16 @@ async function runTests() {
 
     utils.log(`\nStart log analysis.\n`);
 
+    // Download and analyze the logs from the free-tier server.
+    await testnet3LogAnalysis.runTests()
+
     // Download and analyze the logs from the ABC server.
     await abcLogAnalysis.runTests()
 
     // Download and analyze the logs from the BCHN server.
     await bchnLogAnalysis.runTests()
 
-    // Download and analyze the logs from the free-tier server.
-    await freeLogAnalysis.runTests()
+
 
 
 
