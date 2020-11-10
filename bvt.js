@@ -83,18 +83,14 @@ async function runTests() {
 
     utils.log(`\nStart log analysis.\n`);
 
-    // Download and analyze the logs from the free-tier server.
-    await testnet3LogAnalysis.runTests()
-
     // Download and analyze the logs from the ABC server.
     await abcLogAnalysis.runTests()
 
     // Download and analyze the logs from the BCHN server.
     await bchnLogAnalysis.runTests()
 
-
-
-
+    // Download and analyze the logs from the free-tier server.
+    await testnet3LogAnalysis.runTests()
 
     // Signal the tests have completed.
     const endTime = new Date();
