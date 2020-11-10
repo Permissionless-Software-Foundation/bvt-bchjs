@@ -27,8 +27,8 @@ const utils = require("./lib/util");
 const Liveness = require("./lib/liveness");
 const liveness = new Liveness();
 
-const LogAnalysis = require('./lib/log-analysis')
-const logAnalysis = new LogAnalysis()
+const AbcLogAnalysis = require('./lib/bchn-log-analysis')
+const abcLogAnalysis = new AbcLogAnalysis()
 
 const FreeLogAnalysis = require('./lib/free-log-analysis')
 const freeLogAnalysis = new FreeLogAnalysis()
@@ -80,7 +80,7 @@ async function runTests() {
     await bchjs.runTests();
 
     // Download and analyze the logs
-    await logAnalysis.runTests()
+    await abcLogAnalysis.runTests()
 
     // Download and analyze the logs from the free-tier server.
     await freeLogAnalysis.runTests()
