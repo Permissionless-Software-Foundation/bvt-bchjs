@@ -83,10 +83,10 @@ async function runTests() {
     await abcLogAnalysis.runTests()
 
     // Download and analyze the logs from the free-tier server.
-    // await freeLogAnalysis.runTests()
+    await freeLogAnalysis.runTests()
 
     // Download and analyze the logs from the free BCHN server.
-    // await freeBchnAnalysis.runTests()
+    await freeBchnAnalysis.runTests()
 
     // Signal the tests have completed.
     const endTime = new Date();
