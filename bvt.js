@@ -30,11 +30,13 @@ const liveness = new Liveness();
 const AbcLogAnalysis = require('./lib/abc-log-analysis')
 const abcLogAnalysis = new AbcLogAnalysis()
 
+const BchnLogAnalysis = require('./lib/bchn-log-analysis')
+const bchnLogAnalysis = new BchnLogAnalysis()
+
 const FreeLogAnalysis = require('./lib/free-log-analysis')
 const freeLogAnalysis = new FreeLogAnalysis()
 
-const BchnLogAnalysis = require('./lib/free-bchn-log-analysis')
-const freeBchnAnalysis = new BchnLogAnalysis()
+
 
 // Instantiate the JWT handling library for FullStack.cash.
 const JwtLib = require('jwt-bch-lib')
@@ -79,14 +81,18 @@ async function runTests() {
     // Run the suite of BITBOX tests.
     // await bchjs.runTests();
 
-    // Download and analyze the logs
+    utils.log(`\nStart log analysis.\n`);
+
+    // Download and analyze the logs from the ABC server.
     await abcLogAnalysis.runTests()
+
+    // Download and analyze the logs from the BCHN server.
+    await bchnLogAnalysis.runTests()
 
     // Download and analyze the logs from the free-tier server.
     await freeLogAnalysis.runTests()
 
-    // Download and analyze the logs from the free BCHN server.
-    await freeBchnAnalysis.runTests()
+
 
     // Signal the tests have completed.
     const endTime = new Date();
