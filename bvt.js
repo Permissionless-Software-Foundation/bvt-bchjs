@@ -73,24 +73,24 @@ async function runTests() {
     await utils.logAll(`BVT tests started...`);
 
     // Run all liveness tests first.
-    await liveness.runTests();
+    // await liveness.runTests();
 
     // Run the suite of rest tests.
     await bchapi.runTests();
 
     // Run the suite of BITBOX tests.
-    await bchjs.runTests();
+    // await bchjs.runTests();
 
-    utils.log(`\nStart log analysis.\n`);
+    // utils.log(`\nStart log analysis.\n`);
 
     // Download and analyze the logs from the ABC server.
-    await abcLogAnalysis.runTests()
+    // await abcLogAnalysis.runTests()
 
     // Download and analyze the logs from the BCHN server.
-    await bchnLogAnalysis.runTests()
+    // await bchnLogAnalysis.runTests()
 
     // Download and analyze the logs from the free-tier server.
-    await testnet3LogAnalysis.runTests()
+    // await testnet3LogAnalysis.runTests()
 
     // Signal the tests have completed.
     const endTime = new Date();
