@@ -75,11 +75,11 @@ async function runTests() {
     // Run all liveness tests first.
     // await liveness.runTests();
 
-    // Run the suite of rest tests.
-    await bchapi.runTests();
-
     // Run the suite of BITBOX tests.
-    // await bchjs.runTests();
+    await bchjs.runTests();
+
+    // Run the suite of rest tests.
+    // await bchapi.runTests();
 
     // utils.log(`\nStart log analysis.\n`);
 
