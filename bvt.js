@@ -27,25 +27,23 @@ const utils = require("./lib/util");
 const Liveness = require("./lib/liveness");
 const liveness = new Liveness();
 
-const AbcLogAnalysis = require('./lib/abc-log-analysis')
-const abcLogAnalysis = new AbcLogAnalysis()
+const AbcLogAnalysis = require("./lib/abc-log-analysis");
+const abcLogAnalysis = new AbcLogAnalysis();
 
-const BchnLogAnalysis = require('./lib/bchn-log-analysis')
-const bchnLogAnalysis = new BchnLogAnalysis()
+const BchnLogAnalysis = require("./lib/bchn-log-analysis");
+const bchnLogAnalysis = new BchnLogAnalysis();
 
-const Testnet3LogAnalysis = require('./lib/testnet3-log-analysis')
-const testnet3LogAnalysis = new Testnet3LogAnalysis()
-
-
+// const Testnet3LogAnalysis = require('./lib/testnet3-log-analysis')
+// const testnet3LogAnalysis = new Testnet3LogAnalysis()
 
 // Instantiate the JWT handling library for FullStack.cash.
-const JwtLib = require('jwt-bch-lib')
+const JwtLib = require("jwt-bch-lib");
 const jwtLib = new JwtLib({
   // Overwrite default values with the values in the config file.
-  server: 'https://auth.fullstack.cash',
+  server: "https://auth.fullstack.cash",
   login: process.env.FULLSTACKLOGIN,
   password: process.env.FULLSTACKPASS
-})
+});
 
 const BCHAPI = require("./lib/bch-api");
 const bchapi = new BCHAPI();
@@ -66,7 +64,7 @@ async function runTests() {
     utils.log(`Prepared BVT for new run.`);
 
     // Get the JWT token needed to interact with the FullStack.cash API.
-    await getJwt()
+    await getJwt();
 
     // Initialize the logs.
     const startTime = new Date();
@@ -84,18 +82,20 @@ async function runTests() {
     utils.log(`\nStart log analysis.\n`);
 
     // Download and analyze the logs from the ABC server.
-    await abcLogAnalysis.runTests()
+    await abcLogAnalysis.runTests();
 
     // Download and analyze the logs from the BCHN server.
-    await bchnLogAnalysis.runTests()
+    await bchnLogAnalysis.runTests();
 
     // Download and analyze the logs from the free-tier server.
-    await testnet3LogAnalysis.runTests()
+    // await testnet3LogAnalysis.runTests()
 
     // Signal the tests have completed.
     const endTime = new Date();
     await utils.logAll(`...BVT tests completed.`);
-    await utils.logAll(`Results can be viewed at https://metrics.fullstack.cash/`)
+    await utils.logAll(
+      `Results can be viewed at https://metrics.fullstack.cash/`
+    );
 
     // Signal when the next run will be
     const nextRun = new Date(startTime.getTime() + PERIOD);
@@ -129,26 +129,28 @@ setInterval(function() {
 async function getJwt() {
   try {
     // Log into the auth server.
-    await jwtLib.register()
+    await jwtLib.register();
 
-    let apiToken = jwtLib.userData.apiToken
+    let apiToken = jwtLib.userData.apiToken;
 
     // Ensure the JWT token is valid to use.
-    const isValid = await jwtLib.validateApiToken()
+    const isValid = await jwtLib.validateApiToken();
 
     // Get a new token with the same API level, if the existing token is not
     // valid (probably expired).
     if (!isValid.isValid) {
-      apiToken = await jwtLib.getApiToken(jwtLib.userData.apiLevel)
-      await utils.logAll(`The JWT token was not valid. Retrieved new JWT token.\n`)
+      apiToken = await jwtLib.getApiToken(jwtLib.userData.apiLevel);
+      await utils.logAll(
+        `The JWT token was not valid. Retrieved new JWT token.\n`
+      );
     } else {
-      await utils.logAll('JWT token is valid.\n')
+      await utils.logAll("JWT token is valid.\n");
     }
 
     // Set the environment variable.
-    process.env.BCHJSTOKEN = apiToken
-  } catch(err) {
-    console.error(`Error in bvt.js/getJwt(): `, err)
-    throw err
+    process.env.BCHJSTOKEN = apiToken;
+  } catch (err) {
+    console.error(`Error in bvt.js/getJwt(): `, err);
+    throw err;
   }
 }
