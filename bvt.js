@@ -27,11 +27,11 @@ const utils = require('./lib/util')
 const Liveness = require('./lib/liveness')
 const liveness = new Liveness()
 
-// const AbcLogAnalysis = require('./lib/abc-log-analysis')
-// const abcLogAnalysis = new AbcLogAnalysis()
+const AbcLogAnalysis = require('./lib/abc-log-analysis')
+const abcLogAnalysis = new AbcLogAnalysis()
 
-// const BchnLogAnalysis = require('./lib/bchn-log-analysis')
-// const bchnLogAnalysis = new BchnLogAnalysis()
+const BchnLogAnalysis = require('./lib/bchn-log-analysis')
+const bchnLogAnalysis = new BchnLogAnalysis()
 
 // Instantiate the JWT handling library for FullStack.cash.
 const JwtLib = require('jwt-bch-lib')
@@ -79,10 +79,10 @@ async function runTests () {
     utils.log('\nStart log analysis.\n')
 
     // Download and analyze the logs from the ABC server.
-    // await abcLogAnalysis.runTests();
+    await abcLogAnalysis.runTests()
 
     // Download and analyze the logs from the BCHN server.
-    // await bchnLogAnalysis.runTests();
+    await bchnLogAnalysis.runTests()
 
     // Signal the tests have completed.
     // const endTime = new Date()
