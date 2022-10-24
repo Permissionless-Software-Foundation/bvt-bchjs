@@ -27,8 +27,8 @@ const utils = require('./lib/util')
 const Liveness = require('./lib/liveness')
 const liveness = new Liveness()
 
-const AbcLogAnalysis = require('./lib/abc-log-analysis')
-const abcLogAnalysis = new AbcLogAnalysis()
+// const AbcLogAnalysis = require('./lib/abc-log-analysis')
+// const abcLogAnalysis = new AbcLogAnalysis()
 
 const BchnLogAnalysis = require('./lib/bchn-log-analysis')
 const bchnLogAnalysis = new BchnLogAnalysis()
@@ -79,7 +79,7 @@ async function runTests () {
     utils.log('\nStart log analysis.\n')
 
     // Download and analyze the logs from the ABC server.
-    await abcLogAnalysis.runTests()
+    // await abcLogAnalysis.runTests()
 
     // Download and analyze the logs from the BCHN server.
     await bchnLogAnalysis.runTests()
@@ -129,17 +129,21 @@ async function getJwt () {
 
     // Ensure the JWT token is valid to use.
     const isValid = await jwtLib.validateApiToken()
+    // const isValid = false
 
     // Get a new token with the same API level, if the existing token is not
     // valid (probably expired).
     if (!isValid.isValid) {
-      apiToken = await jwtLib.getApiToken(jwtLib.userData.apiLevel)
+      // const apiLevel = jwtLib.userData.apiLevel
+      const apiLevel = 60
+      apiToken = await jwtLib.getApiToken(apiLevel)
       await utils.logAll(
         'The JWT token was not valid. Retrieved new JWT token.\n'
       )
     } else {
       await utils.logAll('JWT token is valid.\n')
     }
+    console.log('jwtLib.userData.apiLevel: ', jwtLib.userData.apiLevel)
 
     // Set the environment variable.
     process.env.BCHJSTOKEN = apiToken
