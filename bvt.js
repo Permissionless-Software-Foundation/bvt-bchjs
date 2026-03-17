@@ -87,16 +87,18 @@ async function runTests () {
   }
 }
 
-// Periodically run the BVT
-setInterval(function () {
-  runTests()
-}, PERIOD)
-
-// Also run the tests immediately
+// Run the tests immediately
 runTests()
 
+// Periodically run the BVT
+// setInterval(function () {
+//   runTests()
+// }, PERIOD)
+
+
+
 // Run garbage collection once per day, to delete any old logs.
-setInterval(function () {
-  utils.collectGarbage()
-}, GARBAGE_PERIOD)
+// setInterval(function () {
+//   utils.collectGarbage()
+// }, GARBAGE_PERIOD)
 
