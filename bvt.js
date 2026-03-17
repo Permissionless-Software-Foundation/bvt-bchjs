@@ -18,24 +18,10 @@
 import { inspect } from 'node:util'
 import fs from 'node:fs'
 
-// Local libraries
-import utils from './lib/util.js'
-import Liveness from './lib/liveness.js'
-import BchnLogAnalysis from './lib/bchn-log-analysis.js'
-import BCHAPI from './lib/bch-api.js'
-import BCHJS from './lib/bch-js.js'
-
-
 // CONSTANTS
-const PERIOD = 60000 * 60 * 2 // 2 hrs
-// const PERIOD = 60000 * 60
-
-const GARBAGE_PERIOD = 60000 * 60 * 24 // 1 day
-// const GARBAGE_PERIOD = 60000 * 60 * 4 // 4 hours
-
 const LOG_FILE = './bvt.log'
 
-// Override console methods to write to file
+// Override console methods to write to file BEFORE importing local modules
 const originalLog = console.log
 const originalError = console.error
 
@@ -57,6 +43,21 @@ console.error = function (...args) {
   writeToLog('ERROR', args)
   originalError.apply(console, args)
 }
+
+// Local libraries (imported AFTER console override)
+import utils from './lib/util.js'
+import Liveness from './lib/liveness.js'
+import BchnLogAnalysis from './lib/bchn-log-analysis.js'
+import BCHAPI from './lib/bch-api.js'
+import BCHJS from './lib/bch-js.js'
+
+
+// CONSTANTS
+const PERIOD = 60000 * 60 * 2 // 2 hrs
+// const PERIOD = 60000 * 60
+
+const GARBAGE_PERIOD = 60000 * 60 * 24 // 1 day
+// const GARBAGE_PERIOD = 60000 * 60 * 4 // 4 hours
 
 
 // INSTANTIATE LOCAL LIBRARIES
