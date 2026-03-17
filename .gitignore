@@ -1,8 +1,12 @@
 node_modules/
-uut/
-private/
+uut/*
+!uut/.gitkeep
+private/*
+!private/.gitkeep
 html/logs/*
 bkup/*
+!bkup/.gitkeep
 start-bvt.sh
 fullstack-bvt.sh
+bvt.log
 

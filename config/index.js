@@ -3,8 +3,6 @@
   settings.
 */
 
-'use strict'
+import common from './env/common.js'
 
-const common = require('./env/common')
-
-module.exports = Object.assign({}, common)
+export default Object.assign({}, common)

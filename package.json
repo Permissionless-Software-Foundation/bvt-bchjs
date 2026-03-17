@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"no tests yet\"",
     "start": "node bvt.js",
-    "lint": "standard --env mocha --fix"
+    "lint": "standard --env mocha --fix",
+    "postinstall": "node scripts/init-dirs.js"
   },
   "repository": {
     "type": "git",
@@ -19,13 +20,14 @@
   },
   "homepage": "https://github.com/christroutner/bvt-rest#readme",
   "dependencies": {
-    "@psf/bch-js": "6.1.0",
+    "@psf/bch-js": "7.1.14",
     "jwt-bch-lib": "1.3.0",
-    "minimal-slp-wallet": "4.4.3",
+    "minimal-slp-wallet": "7.1.5",
     "node-telegram-bot-api": "0.50.0",
     "shelljs": "0.8.4"
   },
   "devDependencies": {
     "standard": "^16.0.4"
-  }
+  },
+  "type": "module"
 }
