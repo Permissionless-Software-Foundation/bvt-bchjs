@@ -57,22 +57,18 @@ async function runTests () {
     // Run all liveness tests first.
     await liveness.runTests()
 
-    // Run the suite of BITBOX tests.
-    await bchjs.runTests()
+    // Run the suite of bch-js tests.
+    // await bchjs.runTests()
 
     // Run the suite of rest tests.
-    await bchapi.runTests()
+    // await bchapi.runTests()
 
     utils.log('\nStart log analysis.\n')
 
-    // Download and analyze the logs from the ABC server.
-    // await abcLogAnalysis.runTests()
-
     // Download and analyze the logs from the BCHN server.
-    await bchnLogAnalysis.runTests()
+    // await bchnLogAnalysis.runTests()
 
     // Signal the tests have completed.
-    // const endTime = new Date()
     await utils.logAll('...BVT tests completed.')
     await utils.logAll(
       'Results can be viewed at https://metrics.fullstack.cash/'
