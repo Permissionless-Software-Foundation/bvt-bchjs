@@ -35,11 +35,27 @@ const GARBAGE_PERIOD = 60000 * 60 * 24 // 1 day
 
 const LOG_FILE = './bvt.log'
 
-// Simple file logger
-function logToFile (message) {
+// Override console methods to write to file
+const originalLog = console.log
+const originalError = console.error
+
+function writeToLog (level, args) {
   const timestamp = new Date().toISOString()
-  const line = `[${timestamp}] ${message}\n`
+  const message = args.map(arg => 
+    typeof arg === 'object' ? JSON.stringify(arg) : String(arg)
+  ).join(' ')
+  const line = `[${timestamp}] [${level}] ${message}\n`
   fs.appendFileSync(LOG_FILE, line)
+}
+
+console.log = function (...args) {
+  writeToLog('LOG', args)
+  originalLog.apply(console, args)
+}
+
+console.error = function (...args) {
+  writeToLog('ERROR', args)
+  originalError.apply(console, args)
 }
 
 
@@ -57,7 +73,7 @@ async function runTests () {
   try {
     // Clear log file at start of each run
     fs.writeFileSync(LOG_FILE, '')
-    logToFile('BVT run started')
+    console.log('BVT run started')
 
     // Cleanup old data and prepare for a new run of tests.
     utils.clearUutDir()
@@ -67,7 +83,6 @@ async function runTests () {
     // Initialize the logs.
     const startTime = new Date()
     await utils.logAll('BVT tests started...')
-    logToFile('BVT tests started...')
 
     // Run all liveness tests first.
     await liveness.runTests()
@@ -85,11 +100,9 @@ async function runTests () {
 
     // Signal the tests have completed.
     await utils.logAll('...BVT tests completed.')
-    logToFile('BVT tests completed')
     await utils.logAll(
       'Results can be viewed at https://metrics.fullstack.cash/'
     )
-    logToFile('Results: https://metrics.fullstack.cash/')
 
     // Signal when the next run will be
     const nextRun = new Date(startTime.getTime() + PERIOD)
@@ -97,10 +110,8 @@ async function runTests () {
       timeZone: 'America/Los_Angeles'
     })
     await utils.logAll(`Next BVT run will be at ${nextRunStr}.`)
-    logToFile(`Next BVT run: ${nextRunStr}`)
   } catch (err) {
     console.error('Error in runTests(): ', err)
-    logToFile(`Error: ${err.message}`)
     utils.log(`Error running BVT: ${err.message}`)
   }
 }
