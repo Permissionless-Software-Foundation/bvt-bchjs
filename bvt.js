@@ -16,6 +16,9 @@
 
 // Global libraries
 import { inspect } from 'node:util'
+import fs from 'node:fs'
+import { dirname } from 'node:path'
+import { fileURLToPath } from 'node:url'
 
 // Local libraries
 import utils from './lib/util.js'
@@ -24,7 +27,6 @@ import BchnLogAnalysis from './lib/bchn-log-analysis.js'
 import BCHAPI from './lib/bch-api.js'
 import BCHJS from './lib/bch-js.js'
 
-
 // CONSTANTS
 const PERIOD = 60000 * 60 * 2 // 2 hrs
 // const PERIOD = 60000 * 60
@@ -32,6 +34,15 @@ const PERIOD = 60000 * 60 * 2 // 2 hrs
 const GARBAGE_PERIOD = 60000 * 60 * 24 // 1 day
 // const GARBAGE_PERIOD = 60000 * 60 * 4 // 4 hours
 
+const __dirname = dirname(fileURLToPath(import.meta.url))
+const LOG_FILE = `${__dirname.toString()}/bvt.log`
+
+// Simple file logger
+function logToFile (message) {
+  const timestamp = new Date().toISOString()
+  const line = `[${timestamp}] ${message}\n`
+  fs.appendFileSync(LOG_FILE, line)
+}
 
 // INSTANTIATE LOCAL LIBRARIES
 const liveness = new Liveness()
@@ -45,6 +56,10 @@ inspect.defaultOptions = { depth: 1 }
 // Have the BVT run all tests.
 async function runTests () {
   try {
+    // Clear log file at start of each run
+    fs.writeFileSync(LOG_FILE, '')
+    logToFile('BVT run started')
+
     // Cleanup old data and prepare for a new run of tests.
     utils.clearUutDir()
     utils.clearLogs()
@@ -53,6 +68,7 @@ async function runTests () {
     // Initialize the logs.
     const startTime = new Date()
     await utils.logAll('BVT tests started...')
+    logToFile('BVT tests started...')
 
     // Run all liveness tests first.
     await liveness.runTests()
@@ -70,19 +86,22 @@ async function runTests () {
 
     // Signal the tests have completed.
     await utils.logAll('...BVT tests completed.')
+    logToFile('BVT tests completed')
     await utils.logAll(
       'Results can be viewed at https://metrics.fullstack.cash/'
     )
+    logToFile('Results: https://metrics.fullstack.cash/')
 
     // Signal when the next run will be
     const nextRun = new Date(startTime.getTime() + PERIOD)
-    await utils.logAll(
-      `Next BVT run will be at ${nextRun.toLocaleString('en-US', {
-        timeZone: 'America/Los_Angeles'
-      })}.`
-    )
+    const nextRunStr = nextRun.toLocaleString('en-US', {
+      timeZone: 'America/Los_Angeles'
+    })
+    await utils.logAll(`Next BVT run will be at ${nextRunStr}.`)
+    logToFile(`Next BVT run: ${nextRunStr}`)
   } catch (err) {
     console.error('Error in runTests(): ', err)
+    logToFile(`Error: ${err.message}`)
     utils.log(`Error running BVT: ${err.message}`)
   }
 }
@@ -99,4 +118,3 @@ setInterval(function () {
 setInterval(function () {
   utils.collectGarbage()
 }, GARBAGE_PERIOD)
-
