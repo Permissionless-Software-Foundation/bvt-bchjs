@@ -20,60 +20,28 @@ import fs from 'node:fs'
 
 // CONSTANTS
 const LOG_FILE = './bvt.log'
+const PERIOD = 60000 * 60 * 2 // 2 hrs
+const GARBAGE_PERIOD = 60000 * 60 * 24 // 1 day
 
-// Override console methods to write to file BEFORE importing local modules
-const originalLog = console.log
-const originalError = console.error
-
-function writeToLog (level, args) {
+// Simple logger that writes to file and console
+function bvtLog (...args) {
   const timestamp = new Date().toISOString()
-  const message = args.map(arg => 
+  const message = args.map(arg =>
     typeof arg === 'object' ? JSON.stringify(arg) : String(arg)
   ).join(' ')
-  const line = `[${timestamp}] [${level}] ${message}\n`
-  try {
-    // Ensure file exists first
-    if (!fs.existsSync(LOG_FILE)) {
-      fs.writeFileSync(LOG_FILE, '')
-    }
-    fs.appendFileSync(LOG_FILE, line)
-  } catch (err) {
-    originalError('BVT LOG ERROR:', err.message)
-  }
+  const line = `[${timestamp}] ${message}\n`
+  // Write to file
+  fs.appendFileSync(LOG_FILE, line)
+  // Also log to console
+  console.log(...args)
 }
 
-console.log = function (...args) {
-  writeToLog('LOG', args)
-  originalLog.apply(console, args)
-}
-
-console.error = function (...args) {
-  writeToLog('ERROR', args)
-  originalError.apply(console, args)
-}
-
-// Local libraries (imported AFTER console override)
+// Local libraries
 import utils from './lib/util.js'
 import Liveness from './lib/liveness.js'
 import BchnLogAnalysis from './lib/bchn-log-analysis.js'
 import BCHAPI from './lib/bch-api.js'
 import BCHJS from './lib/bch-js.js'
-
-// Override utils.log to also write to our log file
-const originalUtilsLog = utils.log
-utils.log = function (str) {
-  writeToLog('LOG', [str])
-  originalUtilsLog(str)
-}
-
-
-// CONSTANTS
-const PERIOD = 60000 * 60 * 2 // 2 hrs
-// const PERIOD = 60000 * 60
-
-const GARBAGE_PERIOD = 60000 * 60 * 24 // 1 day
-// const GARBAGE_PERIOD = 60000 * 60 * 4 // 4 hours
-
 
 // INSTANTIATE LOCAL LIBRARIES
 const liveness = new Liveness()
@@ -89,16 +57,16 @@ async function runTests () {
   try {
     // Clear log file at start of each run
     fs.writeFileSync(LOG_FILE, '')
-    console.log('BVT run started')
+    bvtLog('BVT run started')
 
     // Cleanup old data and prepare for a new run of tests.
     utils.clearUutDir()
     utils.clearLogs()
-    utils.log('Prepared BVT for new run.')
+    bvtLog('Prepared BVT for new run.')
 
     // Initialize the logs.
     const startTime = new Date()
-    await utils.logAll('BVT tests started...')
+    bvtLog('BVT tests started...')
 
     // Run all liveness tests first.
     await liveness.runTests()
@@ -109,26 +77,23 @@ async function runTests () {
     // Run the suite of rest tests.
     // await bchapi.runTests()
 
-    utils.log('\nStart log analysis.\n')
+    bvtLog('\nStart log analysis.\n')
 
     // Download and analyze the logs from the BCHN server.
     await bchnLogAnalysis.runTests()
 
     // Signal the tests have completed.
-    await utils.logAll('...BVT tests completed.')
-    await utils.logAll(
-      'Results can be viewed at https://metrics.fullstack.cash/'
-    )
+    bvtLog('...BVT tests completed.')
+    bvtLog('Results can be viewed at https://metrics.fullstack.cash/')
 
     // Signal when the next run will be
     const nextRun = new Date(startTime.getTime() + PERIOD)
     const nextRunStr = nextRun.toLocaleString('en-US', {
       timeZone: 'America/Los_Angeles'
     })
-    await utils.logAll(`Next BVT run will be at ${nextRunStr}.`)
+    bvtLog(`Next BVT run will be at ${nextRunStr}.`)
   } catch (err) {
-    console.error('Error in runTests(): ', err)
-    utils.log(`Error running BVT: ${err.message}`)
+    bvtLog('Error in runTests(): ', err)
   }
 }
 
@@ -144,4 +109,3 @@ setInterval(function () {
 setInterval(function () {
   utils.collectGarbage()
 }, GARBAGE_PERIOD)
-
