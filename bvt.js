@@ -33,7 +33,7 @@ const PERIOD = 60000 * 60 * 2 // 2 hrs
 const GARBAGE_PERIOD = 60000 * 60 * 24 // 1 day
 // const GARBAGE_PERIOD = 60000 * 60 * 4 // 4 hours
 
-const LOG_FILE = './bvt.log'
+const LOG_FILE = '/home/ben/bvt/bvt-bchjs/bvt.log'
 
 // Simple file logger
 function logToFile (message) {
