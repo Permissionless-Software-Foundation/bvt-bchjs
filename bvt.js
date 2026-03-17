@@ -43,6 +43,17 @@ import BchnLogAnalysis from './lib/bchn-log-analysis.js'
 import BCHAPI from './lib/bch-api.js'
 import BCHJS from './lib/bch-js.js'
 
+// Patch utils.log to also write to bvt.log
+const originalUtilsLog = utils.log
+utils.log = function (str) {
+  // Write to bvt.log file
+  const timestamp = new Date().toISOString()
+  const line = `[${timestamp}] ${str}\n`
+  fs.appendFileSync(LOG_FILE, line)
+  // Call original
+  originalUtilsLog(str)
+}
+
 // INSTANTIATE LOCAL LIBRARIES
 const liveness = new Liveness()
 const bchnLogAnalysis = new BchnLogAnalysis()
