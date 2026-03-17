@@ -35,7 +35,7 @@ const GARBAGE_PERIOD = 60000 * 60 * 24 // 1 day
 
 // INSTANTIATE LOCAL LIBRARIES
 const liveness = new Liveness()
-const bchnLogAnalysis = new BchnLogAnalysis()
+// const bchnLogAnalysis = new BchnLogAnalysis()
 const bchapi = new BCHAPI()
 const bchjs = new BCHJS()
 
@@ -66,7 +66,7 @@ async function runTests () {
     utils.log('\nStart log analysis.\n')
 
     // Download and analyze the logs from the BCHN server.
-    // await bchnLogAnalysis.runTests()
+    await bchnLogAnalysis.runTests()
 
     // Signal the tests have completed.
     await utils.logAll('...BVT tests completed.')
