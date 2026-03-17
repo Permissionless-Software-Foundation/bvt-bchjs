@@ -8,4 +8,5 @@ bkup/*
 !bkup/.gitkeep
 start-bvt.sh
 fullstack-bvt.sh
+bvt.log
 
