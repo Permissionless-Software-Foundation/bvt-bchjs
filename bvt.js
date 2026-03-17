@@ -32,9 +32,13 @@ function writeToLog (level, args) {
   ).join(' ')
   const line = `[${timestamp}] [${level}] ${message}\n`
   try {
+    // Ensure file exists first
+    if (!fs.existsSync(LOG_FILE)) {
+      fs.writeFileSync(LOG_FILE, '')
+    }
     fs.appendFileSync(LOG_FILE, line)
   } catch (err) {
-    originalError('Failed to write to log file:', err.message)
+    originalError('BVT LOG ERROR:', err.message)
   }
 }
 
