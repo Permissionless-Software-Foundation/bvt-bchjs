@@ -25,23 +25,17 @@ const LOG_FILE = './bvt.log'
 const originalLog = console.log
 const originalError = console.error
 
-// Create a persistent write stream for the log file
-let logStream = null
-
-function ensureLogStream () {
-  if (!logStream) {
-    logStream = fs.createWriteStream(LOG_FILE, { flags: 'a' })
-  }
-}
-
 function writeToLog (level, args) {
-  ensureLogStream()
   const timestamp = new Date().toISOString()
   const message = args.map(arg => 
     typeof arg === 'object' ? JSON.stringify(arg) : String(arg)
   ).join(' ')
   const line = `[${timestamp}] [${level}] ${message}\n`
-  logStream.write(line)
+  try {
+    fs.appendFileSync(LOG_FILE, line)
+  } catch (err) {
+    originalError('Failed to write to log file:', err.message)
+  }
 }
 
 console.log = function (...args) {
@@ -90,10 +84,6 @@ inspect.defaultOptions = { depth: 1 }
 async function runTests () {
   try {
     // Clear log file at start of each run
-    if (logStream) {
-      logStream.end()
-      logStream = null
-    }
     fs.writeFileSync(LOG_FILE, '')
     console.log('BVT run started')
 
