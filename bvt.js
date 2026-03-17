@@ -35,7 +35,7 @@ const GARBAGE_PERIOD = 60000 * 60 * 24 // 1 day
 
 // INSTANTIATE LOCAL LIBRARIES
 const liveness = new Liveness()
-// const bchnLogAnalysis = new BchnLogAnalysis()
+const bchnLogAnalysis = new BchnLogAnalysis()
 const bchapi = new BCHAPI()
 const bchjs = new BCHJS()
 
