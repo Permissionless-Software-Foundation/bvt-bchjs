@@ -25,13 +25,23 @@ const LOG_FILE = './bvt.log'
 const originalLog = console.log
 const originalError = console.error
 
+// Create a persistent write stream for the log file
+let logStream = null
+
+function ensureLogStream () {
+  if (!logStream) {
+    logStream = fs.createWriteStream(LOG_FILE, { flags: 'a' })
+  }
+}
+
 function writeToLog (level, args) {
+  ensureLogStream()
   const timestamp = new Date().toISOString()
   const message = args.map(arg => 
     typeof arg === 'object' ? JSON.stringify(arg) : String(arg)
   ).join(' ')
   const line = `[${timestamp}] [${level}] ${message}\n`
-  fs.appendFileSync(LOG_FILE, line)
+  logStream.write(line)
 }
 
 console.log = function (...args) {
@@ -50,6 +60,13 @@ import Liveness from './lib/liveness.js'
 import BchnLogAnalysis from './lib/bchn-log-analysis.js'
 import BCHAPI from './lib/bch-api.js'
 import BCHJS from './lib/bch-js.js'
+
+// Override utils.log to also write to our log file
+const originalUtilsLog = utils.log
+utils.log = function (str) {
+  writeToLog('LOG', [str])
+  originalUtilsLog(str)
+}
 
 
 // CONSTANTS
@@ -73,6 +90,10 @@ inspect.defaultOptions = { depth: 1 }
 async function runTests () {
   try {
     // Clear log file at start of each run
+    if (logStream) {
+      logStream.end()
+      logStream = null
+    }
     fs.writeFileSync(LOG_FILE, '')
     console.log('BVT run started')
 
