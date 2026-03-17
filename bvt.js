@@ -16,6 +16,7 @@
 
 // Global libraries
 import { inspect } from 'node:util'
+import fs from 'node:fs'
 
 // Local libraries
 import utils from './lib/util.js'
@@ -32,6 +33,31 @@ const PERIOD = 60000 * 60 * 2 // 2 hrs
 const GARBAGE_PERIOD = 60000 * 60 * 24 // 1 day
 // const GARBAGE_PERIOD = 60000 * 60 * 4 // 4 hours
 
+const LOG_FILE = './bvt.log'
+
+// Set up file logging - clear log and redirect stdout/stderr
+function setupLogging () {
+  // Clear the log file at the start of each run
+  fs.writeFileSync(LOG_FILE, '')
+
+  // Create write stream for logging
+  const logStream = fs.createWriteStream(LOG_FILE, { flags: 'a' })
+
+  // Redirect stdout and stderr to the log file
+  const originalStdout = process.stdout.write.bind(process.stdout)
+  const originalStderr = process.stderr.write.bind(process.stderr)
+
+  process.stdout.write = (chunk, encoding, callback) => {
+    logStream.write(chunk, encoding, callback)
+    return originalStdout(chunk, encoding, callback)
+  }
+
+  process.stderr.write = (chunk, encoding, callback) => {
+    logStream.write(chunk, encoding, callback)
+    return originalStderr(chunk, encoding, callback)
+  }
+}
+
 
 // INSTANTIATE LOCAL LIBRARIES
 const liveness = new Liveness()
@@ -45,6 +71,9 @@ inspect.defaultOptions = { depth: 1 }
 // Have the BVT run all tests.
 async function runTests () {
   try {
+    // Set up file logging (clears bvt.log and redirects output)
+    setupLogging()
+
     // Cleanup old data and prepare for a new run of tests.
     utils.clearUutDir()
     utils.clearLogs()
