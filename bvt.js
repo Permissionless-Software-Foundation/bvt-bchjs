@@ -17,6 +17,8 @@
 // Global libraries
 import { inspect } from 'node:util'
 import fs from 'node:fs'
+import { dirname } from 'node:path'
+import { fileURLToPath } from 'node:url'
 
 // Local libraries
 import utils from './lib/util.js'
@@ -25,7 +27,6 @@ import BchnLogAnalysis from './lib/bchn-log-analysis.js'
 import BCHAPI from './lib/bch-api.js'
 import BCHJS from './lib/bch-js.js'
 
-
 // CONSTANTS
 const PERIOD = 60000 * 60 * 2 // 2 hrs
 // const PERIOD = 60000 * 60
@@ -33,7 +34,8 @@ const PERIOD = 60000 * 60 * 2 // 2 hrs
 const GARBAGE_PERIOD = 60000 * 60 * 24 // 1 day
 // const GARBAGE_PERIOD = 60000 * 60 * 4 // 4 hours
 
-const LOG_FILE = '/home/ben/bvt/bvt-bchjs/bvt.log'
+const __dirname = dirname(fileURLToPath(import.meta.url))
+const LOG_FILE = `${__dirname.toString()}/bvt.log`
 
 // Simple file logger
 function logToFile (message) {
@@ -41,7 +43,6 @@ function logToFile (message) {
   const line = `[${timestamp}] ${message}\n`
   fs.appendFileSync(LOG_FILE, line)
 }
-
 
 // INSTANTIATE LOCAL LIBRARIES
 const liveness = new Liveness()
@@ -117,4 +118,3 @@ setInterval(function () {
 setInterval(function () {
   utils.collectGarbage()
 }, GARBAGE_PERIOD)
-
