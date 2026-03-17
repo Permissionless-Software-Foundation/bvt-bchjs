@@ -14,7 +14,13 @@
   - e2e
 */
 
-'use strict'
+import { inspect } from 'node:util'
+import JwtLib from 'jwt-bch-lib'
+import utils from './lib/util.js'
+import Liveness from './lib/liveness.js'
+import BchnLogAnalysis from './lib/bchn-log-analysis.js'
+import BCHAPI from './lib/bch-api.js'
+import BCHJS from './lib/bch-js.js'
 
 const PERIOD = 60000 * 60 * 2 // 2 hrs
 // const PERIOD = 60000 * 60
@@ -22,19 +28,14 @@ const PERIOD = 60000 * 60 * 2 // 2 hrs
 const GARBAGE_PERIOD = 60000 * 60 * 24 // 1 day
 // const GARBAGE_PERIOD = 60000 * 60 * 4 // 4 hours
 
-const utils = require('./lib/util')
-
-const Liveness = require('./lib/liveness')
 const liveness = new Liveness()
 
 // const AbcLogAnalysis = require('./lib/abc-log-analysis')
 // const abcLogAnalysis = new AbcLogAnalysis()
 
-const BchnLogAnalysis = require('./lib/bchn-log-analysis')
 const bchnLogAnalysis = new BchnLogAnalysis()
 
 // Instantiate the JWT handling library for FullStack.cash.
-const JwtLib = require('jwt-bch-lib')
 const jwtLib = new JwtLib({
   // Overwrite default values with the values in the config file.
   server: 'https://auth.fullstack.cash',
@@ -42,15 +43,12 @@ const jwtLib = new JwtLib({
   password: process.env.FULLSTACKPASS
 })
 
-const BCHAPI = require('./lib/bch-api')
 const bchapi = new BCHAPI()
 
-const BCHJS = require('./lib/bch-js')
 const bchjs = new BCHJS()
 
 // Used for debugging and iterrogating JS objects.
-const util = require('util')
-util.inspect.defaultOptions = { depth: 1 }
+inspect.defaultOptions = { depth: 1 }
 
 // Have the BVT run all tests.
 async function runTests () {
