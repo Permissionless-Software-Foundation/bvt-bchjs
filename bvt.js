@@ -36,14 +36,10 @@ function bvtLog (...args) {
   console.log(...args)
 }
 
-// Local libraries
+// Local libraries - import utils first
 import utils from './lib/util.js'
-import Liveness from './lib/liveness.js'
-import BchnLogAnalysis from './lib/bchn-log-analysis.js'
-import BCHAPI from './lib/bch-api.js'
-import BCHJS from './lib/bch-js.js'
 
-// Patch utils.log to also write to bvt.log
+// Patch utils.log BEFORE importing classes that use it
 const originalUtilsLog = utils.log
 utils.log = function (str) {
   // Write to bvt.log file
@@ -53,6 +49,12 @@ utils.log = function (str) {
   // Call original
   originalUtilsLog(str)
 }
+
+// Now import classes that use utils.log
+import Liveness from './lib/liveness.js'
+import BchnLogAnalysis from './lib/bchn-log-analysis.js'
+import BCHAPI from './lib/bch-api.js'
+import BCHJS from './lib/bch-js.js'
 
 // INSTANTIATE LOCAL LIBRARIES
 const liveness = new Liveness()
