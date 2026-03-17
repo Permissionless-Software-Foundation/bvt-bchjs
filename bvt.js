@@ -14,40 +14,32 @@
   - e2e
 */
 
+// Global libraries
 import { inspect } from 'node:util'
-import JwtLib from 'jwt-bch-lib'
+
+// Local libraries
 import utils from './lib/util.js'
 import Liveness from './lib/liveness.js'
 import BchnLogAnalysis from './lib/bchn-log-analysis.js'
 import BCHAPI from './lib/bch-api.js'
 import BCHJS from './lib/bch-js.js'
 
+
+// CONSTANTS
 const PERIOD = 60000 * 60 * 2 // 2 hrs
 // const PERIOD = 60000 * 60
 
 const GARBAGE_PERIOD = 60000 * 60 * 24 // 1 day
 // const GARBAGE_PERIOD = 60000 * 60 * 4 // 4 hours
 
+
+// INSTANTIATE LOCAL LIBRARIES
 const liveness = new Liveness()
-
-// const AbcLogAnalysis = require('./lib/abc-log-analysis')
-// const abcLogAnalysis = new AbcLogAnalysis()
-
 const bchnLogAnalysis = new BchnLogAnalysis()
-
-// Instantiate the JWT handling library for FullStack.cash.
-const jwtLib = new JwtLib({
-  // Overwrite default values with the values in the config file.
-  server: 'https://auth.fullstack.cash',
-  login: process.env.FULLSTACKLOGIN,
-  password: process.env.FULLSTACKPASS
-})
-
 const bchapi = new BCHAPI()
-
 const bchjs = new BCHJS()
 
-// Used for debugging and iterrogating JS objects.
+// Used for debugging and interrogating JS objects.
 inspect.defaultOptions = { depth: 1 }
 
 // Have the BVT run all tests.
@@ -57,9 +49,6 @@ async function runTests () {
     utils.clearUutDir()
     utils.clearLogs()
     utils.log('Prepared BVT for new run.')
-
-    // Get the JWT token needed to interact with the FullStack.cash API.
-    await getJwt()
 
     // Initialize the logs.
     const startTime = new Date()
@@ -115,38 +104,3 @@ setInterval(function () {
   utils.collectGarbage()
 }, GARBAGE_PERIOD)
 
-// Get's a JWT token from FullStack.cash.
-// This code based on the jwt-bch-demo:
-// https://github.com/Permissionless-Software-Foundation/jwt-bch-demo
-async function getJwt () {
-  try {
-    // Log into the auth server.
-    await jwtLib.register()
-
-    let apiToken = jwtLib.userData.apiToken
-
-    // Ensure the JWT token is valid to use.
-    const isValid = await jwtLib.validateApiToken()
-    // const isValid = false
-
-    // Get a new token with the same API level, if the existing token is not
-    // valid (probably expired).
-    if (!isValid.isValid) {
-      // const apiLevel = jwtLib.userData.apiLevel
-      const apiLevel = 60
-      apiToken = await jwtLib.getApiToken(apiLevel)
-      await utils.logAll(
-        'The JWT token was not valid. Retrieved new JWT token.\n'
-      )
-    } else {
-      await utils.logAll('JWT token is valid.\n')
-    }
-    console.log('jwtLib.userData.apiLevel: ', jwtLib.userData.apiLevel)
-
-    // Set the environment variable.
-    process.env.BCHJSTOKEN = apiToken
-  } catch (err) {
-    console.error('Error in bvt.js/getJwt(): ', err)
-    throw err
-  }
-}

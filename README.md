@@ -11,7 +11,7 @@ This is the Build Verification Test (BVT) system for FullStack.cash. It's an aut
 
 - Clone this repository
 - npm install dependencies
-- Create the following directories inside the repository directory:
+- The repository includes the following directories by default (and `npm install` also ensures they exist):
   - uut
   - private
   - bkup

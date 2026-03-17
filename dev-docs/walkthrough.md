@@ -20,7 +20,6 @@ At a high level, it:
   - log garbage cleanup every 24 hours (`GARBAGE_PERIOD`)
 - `runTests()` orchestrates the whole pipeline in this order:
   - `utils.clearUutDir()` and `utils.clearLogs()`
-  - `getJwt()` to populate `process.env.BCHJSTOKEN`
   - `liveness.runTests()`
   - `bchjs.runTests()`
   - `bchapi.runTests()`
