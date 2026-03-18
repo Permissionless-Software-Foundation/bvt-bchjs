@@ -18,6 +18,15 @@
 import { inspect } from 'node:util'
 import fs from 'node:fs'
 
+// Local libraries - import utils first
+import utils from './lib/util.js'
+
+// Now import classes that use utils.log
+import Liveness from './lib/liveness.js'
+import BchnLogAnalysis from './lib/bchn-log-analysis.js'
+// import BCHAPI from './lib/bch-api.js'
+// import BCHJS from './lib/bch-js.js'
+
 // CONSTANTS
 const LOG_FILE = './bvt.log'
 const PERIOD = 60000 * 60 * 2 // 2 hrs
@@ -36,9 +45,6 @@ function bvtLog (...args) {
   console.log(...args)
 }
 
-// Local libraries - import utils first
-import utils from './lib/util.js'
-
 // Patch utils.log BEFORE importing classes that use it
 const originalUtilsLog = utils.log
 utils.log = function (str) {
@@ -50,17 +56,11 @@ utils.log = function (str) {
   originalUtilsLog(str)
 }
 
-// Now import classes that use utils.log
-import Liveness from './lib/liveness.js'
-import BchnLogAnalysis from './lib/bchn-log-analysis.js'
-import BCHAPI from './lib/bch-api.js'
-import BCHJS from './lib/bch-js.js'
-
 // INSTANTIATE LOCAL LIBRARIES
 const liveness = new Liveness()
 const bchnLogAnalysis = new BchnLogAnalysis()
-const bchapi = new BCHAPI()
-const bchjs = new BCHJS()
+// const bchapi = new BCHAPI()
+// const bchjs = new BCHJS()
 
 // Used for debugging and interrogating JS objects.
 inspect.defaultOptions = { depth: 1 }
