@@ -12,6 +12,7 @@ export default {
     ? process.env.IGNORED_CLIENT_IP_PATTERNS.split(',').map(x => x.trim()).filter(Boolean)
     : [
         '192.168.0.*',
-        '172.10.*.*'
+        '172.10.*.*',
+        '172.20.0.*'
       ]
 }
