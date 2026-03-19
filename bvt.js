@@ -92,8 +92,21 @@ async function runTests () {
 
     bvtLog('\nStart log analysis.\n')
 
-    // Download and analyze the logs from the BCHN server.
-    await bchnLogAnalysis.runTests()
+    // Download and analyze noauth logs from the BCHN server.
+    bvtLog('Start BCHN analytics pass [noauth].')
+    await bchnLogAnalysis.runTests({
+      variant: 'noauth',
+      downloadScript: 'download-noauth-logs.sh',
+      outputSuffix: 'noauth'
+    })
+
+    // Download and analyze x402 logs from the BCHN server.
+    bvtLog('Start BCHN analytics pass [x402].')
+    await bchnLogAnalysis.runTests({
+      variant: 'x402',
+      downloadScript: 'download-x402-logs.sh',
+      outputSuffix: 'x402'
+    })
 
     // Signal the tests have completed.
     bvtLog('...BVT tests completed.')
