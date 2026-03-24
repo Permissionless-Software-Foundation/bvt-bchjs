@@ -17,6 +17,8 @@
 // Global libraries
 import { inspect } from 'node:util'
 import fs from 'node:fs'
+import path, { dirname } from 'node:path'
+import { fileURLToPath } from 'node:url'
 
 // Local libraries - import utils first
 import utils from './lib/util.js'
@@ -31,6 +33,35 @@ import BchnLogAnalysis from './lib/bchn-log-analysis.js'
 const LOG_FILE = './bvt.log'
 const PERIOD = 60000 * 60 * 2 // 2 hrs
 const GARBAGE_PERIOD = 60000 * 60 * 24 // 1 day
+
+// Same location as lib/bchn-log-analysis.js (sibling of this repo).
+const PSF_BCH_API_LOGS_DIR = path.resolve(
+  dirname(fileURLToPath(import.meta.url)),
+  '..',
+  'psf-bch-api-logs'
+)
+
+// Assert that the psf-bch-api-logs directory exists.
+function assertPsfBchApiLogsDirExists () {
+  let st
+  try {
+    st = fs.statSync(PSF_BCH_API_LOGS_DIR)
+  } catch {
+    throw new Error(
+      `BVT requires the psf-bch-api-logs directory. It was not found at:\n` +
+        `  ${PSF_BCH_API_LOGS_DIR}\n\n` +
+        'Create that directory as a sibling of this repository (same parent folder as ' +
+        'the bvt-bchjs checkout), and add the log download scripts expected by BCHN ' +
+        'analytics (e.g. download-noauth-logs.sh, download-x402-logs.sh).'
+    )
+  }
+  if (!st.isDirectory()) {
+    throw new Error(
+      `BVT requires psf-bch-api-logs to be a directory. Path exists but is not a directory:\n` +
+        `  ${PSF_BCH_API_LOGS_DIR}`
+    )
+  }
+}
 
 // Simple logger that writes to file and console
 function bvtLog (...args) {
@@ -64,6 +95,8 @@ const bchnLogAnalysis = new BchnLogAnalysis()
 
 // Used for debugging and interrogating JS objects.
 inspect.defaultOptions = { depth: 1 }
+
+assertPsfBchApiLogsDirExists()
 
 // Have the BVT run all tests.
 async function runTests () {

@@ -16,6 +16,12 @@ This is the Build Verification Test (BVT) system for FullStack.cash. It's an aut
   - private
   - bkup
 
+### `psf-bch-api-logs` (required)
+
+The BCHN log analytics step downloads logs by running shell scripts from a separate directory named **`psf-bch-api-logs`**. That directory must exist as a **sibling of this repository** (the same parent folder that contains your `bvt-bchjs` checkout). For example, if this repo is at `~/work/bvt-bchjs`, create `~/work/psf-bch-api-logs` and place the download scripts there (including `download-noauth-logs.sh` and `download-x402-logs.sh`).
+
+If `psf-bch-api-logs` is missing or is not a directory, **the app exits at startup** with an error that includes the expected absolute path.
+
 - Place shell scripts in the `private` directory that will be run when testing bch-api. These shell scripts should set the environment variables required to connect bch-api to its underlying infrastructure.
 
 - [Install Redis](https://www.digitalocean.com/community/tutorials/how-to-install-and-secure-redis-on-ubuntu-18-04) in order to run bch-api tests.
