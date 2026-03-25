@@ -137,6 +137,14 @@ async function runTests () {
       outputSuffix: 'x402'
     })
 
+    // Download and analyze x402 logs from the BCHN server.
+    bvtLog('Start BCHN analytics pass [x402-base].')
+    await bchnLogAnalysis.runTests({
+      variant: 'x402-base',
+      downloadScript: 'download-x402-base-logs.sh',
+      outputSuffix: 'x402-base'
+    })
+
     // PSF token metrics.
     await psfToken.runTests()
 
