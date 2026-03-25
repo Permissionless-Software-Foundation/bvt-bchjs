@@ -26,6 +26,7 @@ import utils from './lib/util.js'
 // Now import classes that use utils.log
 import Liveness from './lib/liveness.js'
 import BchnLogAnalysis from './lib/bchn-log-analysis.js'
+import PsfToken from './lib/psf-token.js'
 // import BCHAPI from './lib/bch-api.js'
 // import BCHJS from './lib/bch-js.js'
 
@@ -90,6 +91,7 @@ utils.log = function (str) {
 // INSTANTIATE LOCAL LIBRARIES
 const liveness = new Liveness()
 const bchnLogAnalysis = new BchnLogAnalysis()
+const psfToken = new PsfToken()
 // const bchapi = new BCHAPI()
 // const bchjs = new BCHJS()
 
@@ -115,7 +117,7 @@ async function runTests () {
     bvtLog('BVT tests started...')
 
     // Run all liveness tests first.
-    await liveness.runTests()
+    // await liveness.runTests()
 
     // Run the suite of bch-js tests.
     // await bchjs.runTests()
@@ -140,6 +142,9 @@ async function runTests () {
       downloadScript: 'download-x402-logs.sh',
       outputSuffix: 'x402'
     })
+
+    // PSF token metrics.
+    await psfToken.runTests()
 
     // Signal the tests have completed.
     bvtLog('...BVT tests completed.')

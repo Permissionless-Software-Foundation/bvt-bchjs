@@ -22,6 +22,7 @@
   "dependencies": {
     "@psf/bch-js": "7.1.14",
     "jwt-bch-lib": "1.3.0",
+    "level": "10.0.0",
     "minimal-slp-wallet": "7.1.5",
     "node-telegram-bot-api": "0.50.0",
     "shelljs": "0.8.4"
