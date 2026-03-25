@@ -119,7 +119,7 @@ async function runTests () {
     bvtLog('BVT tests started...')
 
     // Run all liveness tests first.
-    // await liveness.runTests()
+    await liveness.runTests()
 
     // Run the suite of bch-js tests.
     // await bchjs.runTests()
