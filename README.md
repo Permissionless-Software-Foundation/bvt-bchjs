@@ -16,6 +16,8 @@ This is the Build Verification Test (BVT) system for FullStack.cash. It's an aut
   - private
   - bkup
 
+PSF token burn tracking (see `lib/psf-token.js`) stores LevelDB snapshots under **`private/psf-token-burn/`** (created automatically). That path is covered by `private/*` in `.gitignore`, so local DB files are not committed.
+
 ### `psf-bch-api-logs` (required)
 
 The BCHN log analytics step downloads logs by running shell scripts from a separate directory named **`psf-bch-api-logs`**. That directory must exist as a **sibling of this repository** (the same parent folder that contains your `bvt-bchjs` checkout). For example, if this repo is at `~/work/bvt-bchjs`, create `~/work/psf-bch-api-logs` and place the download scripts there (including `download-noauth-logs.sh` and `download-x402-logs.sh`).
