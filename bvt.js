@@ -32,13 +32,16 @@ import Psffpp from './lib/psffpp.js'
 // import BCHJS from './lib/bch-js.js'
 
 // CONSTANTS
-const LOG_FILE = './bvt.log'
 const PERIOD = 60000 * 60 * 2 // 2 hrs
 const GARBAGE_PERIOD = 60000 * 60 * 24 // 1 day
 
+// Always write logs next to this script, regardless of current working directory.
+const SCRIPT_DIR = dirname(fileURLToPath(import.meta.url))
+const LOG_FILE = path.resolve(SCRIPT_DIR, 'bvt.log')
+
 // Same location as lib/bchn-log-analysis.js (sibling of this repo).
 const PSF_BCH_API_LOGS_DIR = path.resolve(
-  dirname(fileURLToPath(import.meta.url)),
+  SCRIPT_DIR,
   '..',
   'psf-bch-api-logs'
 )
@@ -76,17 +79,6 @@ function bvtLog (...args) {
   fs.appendFileSync(LOG_FILE, line)
   // Also log to console
   console.log(...args)
-}
-
-// Patch utils.log BEFORE importing classes that use it
-const originalUtilsLog = utils.log
-utils.log = function (str) {
-  // Write to bvt.log file
-  const timestamp = new Date().toISOString()
-  const line = `[${timestamp}] ${str}\n`
-  fs.appendFileSync(LOG_FILE, line)
-  // Call original
-  originalUtilsLog(str)
 }
 
 // INSTANTIATE LOCAL LIBRARIES
