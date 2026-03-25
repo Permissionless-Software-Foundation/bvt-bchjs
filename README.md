@@ -16,7 +16,7 @@ This is the Build Verification Test (BVT) system for FullStack.cash. It's an aut
   - private
   - bkup
 
-PSF token burn tracking (see `lib/psf-token.js`) stores LevelDB snapshots under **`private/psf-token-burn/`** (created automatically). That path is covered by `private/*` in `.gitignore`, so local DB files are not committed.
+LevelDB snapshots used for 24h metrics are created automatically under **`private/`** and are not committed (`private/*` in `.gitignore`): **`private/psf-token-burn/`** (`lib/psf-token.js`) and **`private/psffpp-pins/`** (`lib/psffpp.js`).
 
 ### `psf-bch-api-logs` (required)
 
