@@ -27,6 +27,7 @@ import utils from './lib/util.js'
 import Liveness from './lib/liveness.js'
 import BchnLogAnalysis from './lib/bchn-log-analysis.js'
 import PsfToken from './lib/psf-token.js'
+import Psffpp from './lib/psffpp.js'
 // import BCHAPI from './lib/bch-api.js'
 // import BCHJS from './lib/bch-js.js'
 
@@ -49,7 +50,7 @@ function assertPsfBchApiLogsDirExists () {
     st = fs.statSync(PSF_BCH_API_LOGS_DIR)
   } catch {
     throw new Error(
-      `BVT requires the psf-bch-api-logs directory. It was not found at:\n` +
+      'BVT requires the psf-bch-api-logs directory. It was not found at:\n' +
         `  ${PSF_BCH_API_LOGS_DIR}\n\n` +
         'Create that directory as a sibling of this repository (same parent folder as ' +
         'the bvt-bchjs checkout), and add the log download scripts expected by BCHN ' +
@@ -58,7 +59,7 @@ function assertPsfBchApiLogsDirExists () {
   }
   if (!st.isDirectory()) {
     throw new Error(
-      `BVT requires psf-bch-api-logs to be a directory. Path exists but is not a directory:\n` +
+      'BVT requires psf-bch-api-logs to be a directory. Path exists but is not a directory:\n' +
         `  ${PSF_BCH_API_LOGS_DIR}`
     )
   }
@@ -92,6 +93,7 @@ utils.log = function (str) {
 const liveness = new Liveness()
 const bchnLogAnalysis = new BchnLogAnalysis()
 const psfToken = new PsfToken()
+const psffpp = new Psffpp()
 // const bchapi = new BCHAPI()
 // const bchjs = new BCHJS()
 
@@ -145,6 +147,9 @@ async function runTests () {
 
     // PSF token metrics.
     await psfToken.runTests()
+
+    // PSFFPP metrics.
+    await psffpp.runTests()
 
     // Signal the tests have completed.
     bvtLog('...BVT tests completed.')
