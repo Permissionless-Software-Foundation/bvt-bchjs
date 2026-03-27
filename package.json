@@ -25,7 +25,7 @@
     "level": "10.0.0",
     "minimal-slp-wallet": "7.1.5",
     "node-telegram-bot-api": "0.50.0",
-    "shelljs": "0.8.4"
+    "shelljs": "0.8.5"
   },
   "devDependencies": {
     "standard": "^16.0.4"
