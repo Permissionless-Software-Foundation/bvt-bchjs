@@ -130,7 +130,7 @@ async function runTests () {
     })
 
     // Download and analyze x402 logs from the BCHN server.
-    bvtLog('Start BCHN analytics pass [x402].')
+    bvtLog('Start BCHN analytics pass [x402-bch].')
     await bchnLogAnalysis.runTests({
       variant: 'x402',
       downloadScript: 'download-x402-logs.sh',
